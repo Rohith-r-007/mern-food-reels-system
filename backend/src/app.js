@@ -3,6 +3,7 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const authRoutes = require('./routes/auth.routes.js');
+const foodRoutes = require('./routes/food.routes.js');
 
 const app = express();// creating an instance of express
 
@@ -15,5 +16,6 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/auth', authRoutes); // all auth related routes will start with /api/auth
+app.use('/api/food', foodRoutes); // all food related routes will start with /api/food
 
 module.exports = app;
