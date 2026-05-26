@@ -6,6 +6,7 @@ import UserLogin from '../pages/auth/UserLogin'
 import FoodPartnerRegister from '../pages/auth/FoodPartnerRegister'
 import FoodPartnerLogin from '../pages/auth/FoodPartnerLogin'
 import CreateFood from '../pages/food-partner/CreateFood'
+import Profile from '../pages/food-partner/Profile'
 
 // Route placeholder for partner's food feed. Replace with actual page when ready.
 
@@ -19,6 +20,7 @@ const AppRoutes = () => {
         <Route path="/food-partner/register" element={<FoodPartnerRegister/>} />
         <Route path="/food-partner/login" element={<FoodPartnerLogin/>} />
         <Route path="/partner/:partnerId" element={<div>Partner Foods (placeholder)</div>} />
+        <Route path="/food-partner/:id" element={<Profile/>} />
         <Route path="/create-food" element={<CreateFood/>} />
       </Routes>
     </Router>
