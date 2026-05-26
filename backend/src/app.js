@@ -5,9 +5,15 @@ const cookieParser = require('cookie-parser');
 const authRoutes = require('./routes/auth.routes.js');
 const foodRoutes = require('./routes/food.routes.js');
 
+const cors = require('cors');
+
 const app = express();// creating an instance of express
 
 // middlewares
+app.use(cors({
+    origin: 'http://localhost:5173', // frontend url
+    credentials: true // to allow cookies to be sent in cross-origin requests
+}))
 app.use(cookieParser()); // to store tokens in cookies
 app.use(express.json()); // to read req.body in json format
 
