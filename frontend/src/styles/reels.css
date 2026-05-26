@@ -1,0 +1,170 @@
+@import './variables.css';
+
+/* Page container ensures full viewport and background */
+.reels-page {
+  height: 100dvh;
+  background: var(--color-bg);
+  overflow: hidden; /* parent hides overscroll glow on iOS */
+}
+
+/* Vertical feed with snap scrolling */
+.reels-feed {
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+/* Each reel takes full viewport */
+.reel {
+  position: relative;
+  height: 100dvh;
+  width: 100%;
+  scroll-snap-align: start;
+  background: #000; /* fallback while video loads */
+}
+
+.reel-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* cover entire screen */
+  object-position: center;
+  background: #000;
+}
+
+/* Overlay: content sits on top of video */
+.reel-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end; /* content near bottom */
+  pointer-events: none; /* allow click-through except controls */
+}
+
+/* Subtle top-to-bottom gradient so text is readable on any video */
+.reel-overlay-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,
+    rgba(0,0,0,0.25) 0%,
+    rgba(0,0,0,0.05) 30%,
+    rgba(0,0,0,0.35) 65%,
+    rgba(0,0,0,0.65) 100%
+  );
+}
+
+.reel-content {
+  position: relative;
+  width: 100%;
+  padding: var(--space-6);
+  padding-left: 20px; /* inset from left edge to match design */
+  padding-bottom: calc(env(safe-area-inset-bottom, 0) + 72px); /* make space for bottom nav */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; /* push description and CTA to bottom */
+  padding-right: 4.5rem;
+  gap: var(--space-4);
+  pointer-events: auto; /* enable button click */
+}
+
+/* Truncated to two lines */
+.reel-description {
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0,0,0,.4);
+  font-size: 1rem;
+  line-height: 1.3;
+  display: -webkit-box;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  max-width: 90ch;
+  margin-bottom: 0.5rem; /* space between description and CTA */
+}
+
+/* Slightly smaller description and tighter max width to match screenshot */
+@media (max-width: 480px) {
+  .reel-description { font-size: 0.95rem; max-width: 48ch; }
+}
+
+/* extra left inset on small screens to match screenshot */
+@media (max-width: 480px) {
+  .reel-content { padding-left: 18px; }
+}
+
+.reel-btn {
+  align-self: flex-start;
+  background: #1E90FF; /* solid blue to match screenshot */
+  color: #fff;
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: .2px;
+  text-decoration: none;
+  box-shadow: 0 8px 30px rgba(14,30,60,0.5);
+  border: none;
+  min-width: 110px;
+  display: inline-block;
+  text-align: center;
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.reel-btn:hover { transform: scale(1.03); box-shadow: 0 18px 48px rgba(14,30,60,0.55); }
+.reel-btn:active { transform: translateY(1px) scale(0.995); }
+.reel-btn:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+
+/* Desktop tweaks */
+@media (min-width: 768px) {
+  .reel-content { padding: 36px; }
+  .reel-description { font-size: 1.05rem; max-width: 70ch; }
+}
+
+/* Right-side vertical actions (like, bookmark, comments) */
+.reel-actions {
+  position: absolute;
+  right: 10px;
+  bottom: 96px; /* above bottom CTA and nav */
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  pointer-events: auto;
+}
+
+.reel-action {
+  width: 48px;
+  height: 48px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, #000 35%, transparent);
+  backdrop-filter: blur(2px);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.15);
+  box-shadow: var(--shadow-md);
+}
+
+.reel-action:active { transform: translateY(1px); }
+
+.reel-action__count {
+  color: #fff;
+  text-align: center;
+  font-size: 12px;
+}
+
+.reel-action-group{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  color: #fff;
+}
+
+.empty-state{
+  position: absolute; inset: 0; display: grid; place-items: center; color: #fff;
+}
