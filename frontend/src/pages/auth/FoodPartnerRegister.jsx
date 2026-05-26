@@ -2,14 +2,34 @@ import React from 'react'
 import AuthSwitch from '../../components/AuthSwitch'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
-
+import { useNavigate } from 'react-router-dom'
 const FoodPartnerRegister = () => {
+
+  const navigate = useNavigate()
+
   const handleSubmit = async (e) => {
     e.preventDefault()
-    // TODO: implement partner registration logic.
-    // const data = new FormData(e.target)
-    // const payload = Object.fromEntries(data.entries())
-    // console.log(payload)
+    const name = e.target.businessName.value;
+    const contactName = e.target.contactName.value;
+    const phone = e.target.phone.value;
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+    const address = e.target.address.value;
+
+    const response = await axios.post("http://localhost:3000/api/auth/food-partner/register", {
+        name,
+        contactName,
+        phone,
+        email,
+        password,
+        address
+    }, {
+      withCredentials: true
+    })
+
+    console.log(response.data);
+
+    navigate("/create-food")
   }
 
   return (

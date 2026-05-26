@@ -3,7 +3,11 @@ const storageService = require('../services/storage.services.js');
 const { v4: uuid } = require('uuid');
 
 async function createFood(req, res) {
-    const fileUploadResult = await storageService.uploadFile(req.file.buffer, uuid())
+    const ext = req.file.originalname.split('.').pop();
+
+    const base64File = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
+
+    const fileUploadResult = await storageService.uploadFile(base64File, `${uuid()}.${ext}`);
     
     const foodItem = await foodModel.create({
         name: req.body.name,

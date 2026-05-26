@@ -1,14 +1,28 @@
 import React from 'react'
 import AuthSwitch from '../../components/AuthSwitch'
 import { Link } from 'react-router-dom'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 const FoodPartnerLogin = () => {
-  const handleSubmit = (e) => {
+
+  const navigate = useNavigate()
+
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    // TODO: implement partner login logic
-    // const data = new FormData(e.target)
-    // const payload = Object.fromEntries(data.entries())
-    // console.log(payload)
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+
+    const response = axios.post("http://localhost:3000/api/auth/food-partner/login", {
+      email,
+      password
+    }, {
+      withCredentials: true
+    })
+
+    console.log(response.data);
+
+    navigate("/create-food")
   }
 
   return (

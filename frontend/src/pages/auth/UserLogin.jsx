@@ -1,14 +1,28 @@
 import React from 'react'
 import AuthSwitch from '../../components/AuthSwitch'
 import { Link } from 'react-router-dom'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 const UserLogin = () => {
-  const handleSubmit = (e) => {
+
+  const navigate = useNavigate()
+  
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    // TODO: implement login logic. Example:
-    // const data = new FormData(e.target)
-    // const payload = Object.fromEntries(data.entries())
-    // console.log(payload)
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+
+    const response = await axios.post("http://localhost:3000/api/auth/user/login", {
+      email,
+      password
+    }, {
+      withCredentials: true
+    })
+
+    console.log(response.data);
+
+    navigate("/");
   }
 
   return (
