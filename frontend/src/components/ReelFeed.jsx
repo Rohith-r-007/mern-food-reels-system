@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 
 // Reusable feed for vertical reels
 // Props:
@@ -10,6 +10,8 @@ import { useNavigate } from 'react-router-dom'
 const ReelFeed = ({ items = [], onLike, onSave, emptyMessage = 'No videos yet.' }) => {
   const videoRefs = useRef(new Map())
   const navigate = useNavigate()
+  const location = useLocation()
+  const activeTab = location.pathname === '/saved' ? 'saved' : 'home'
   const activeReels = useRef(new Set())
 
   useEffect(() => {
@@ -64,8 +66,12 @@ const ReelFeed = ({ items = [], onLike, onSave, emptyMessage = 'No videos yet.' 
           </div>
         )}
 
-        {items.map((item) => (
-          <section key={item._id} className="reel" role="listitem">
+        {items.map((item) => {
+          const isLiked = Boolean(item.isLiked ?? item.liked)
+          const isSaved = Boolean(item.isSaved ?? item.saved ?? item.isBookmarked)
+
+          return (
+            <section key={item._id} className="reel" role="listitem">
             <video
               ref={setVideoRef(item._id)}
               className="reel-video"
@@ -82,29 +88,51 @@ const ReelFeed = ({ items = [], onLike, onSave, emptyMessage = 'No videos yet.' 
                 <div className="reel-action-group">
                   <button
                     onClick={onLike ? () => onLike(item) : undefined}
-                    className="reel-action"
+                    className={`reel-action ${isLiked ? 'is-liked' : ''}`}
                     aria-label="Like"
                     type="button"
                   >
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <svg
+                      width="22"
+                      height="22"
+                      viewBox="0 0 24 24"
+                      fill={isLiked ? 'currentColor' : 'none'}
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
                       <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 22l7.8-8.6 1-1a5.5 5.5 0 0 0 0-7.8z" />
                     </svg>
                   </button>
-                  <div className="reel-action__count">{item.likeCount ?? item.likesCount ?? item.likes ?? 0}</div>
+                  <div className="reel-action__count">
+                    {item.likeCount ?? item.likesCount ?? item.likes ?? 0}
+                  </div>
                 </div>
 
                 <div className="reel-action-group">
                   <button
-                    className="reel-action"
+                    className={`reel-action ${isSaved ? 'is-saved' : ''}`}
                     onClick={onSave ? () => onSave(item) : undefined}
                     aria-label="Bookmark"
                     type="button"
                   >
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <svg
+                      width="22"
+                      height="22"
+                      viewBox="0 0 24 24"
+                      fill={isSaved ? 'currentColor' : 'none'}
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
                       <path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z" />
                     </svg>
                   </button>
-                  <div className="reel-action__count">{item.savesCount ?? item.bookmarks ?? item.saves ?? 0}</div>
+                  <div className="reel-action__count">
+                    {item.saveCount ?? item.savesCount ?? item.bookmarks ?? item.saves ?? 0}
+                  </div>
                 </div>
 
                 <div className="reel-action-group">
@@ -113,7 +141,6 @@ const ReelFeed = ({ items = [], onLike, onSave, emptyMessage = 'No videos yet.' 
                       <path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z" />
                     </svg>
                   </button>
-                  <div className="reel-action__count">{item.commentsCount ?? (Array.isArray(item.comments) ? item.comments.length : 0)}</div>
                 </div>
               </div>
 
@@ -132,8 +159,36 @@ const ReelFeed = ({ items = [], onLike, onSave, emptyMessage = 'No videos yet.' 
               </div>
             </div>
           </section>
-        ))}
+          )
+        })}
       </div>
+
+      <nav className="bottom-nav" aria-label="Bottom navigation">
+        <button
+          type="button"
+          className={`bottom-nav__item ${activeTab === 'home' ? 'is-active' : ''}`}
+          aria-label="Home videos"
+          onClick={() => navigate('/home')}
+        >
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M3 11.5 12 4l9 7.5" />
+            <path d="M5 10.8V20h14v-9.2" />
+          </svg>
+          <span>Home</span>
+        </button>
+
+        <button
+          type="button"
+          className={`bottom-nav__item ${activeTab === 'saved' ? 'is-active' : ''}`}
+          aria-label="Saved videos"
+          onClick={() => navigate('/saved')}
+        >
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z" />
+          </svg>
+          <span>Saved</span>
+        </button>
+      </nav>
     </div>
   )
 }

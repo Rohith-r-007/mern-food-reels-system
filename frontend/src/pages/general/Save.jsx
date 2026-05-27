@@ -3,13 +3,16 @@ import axios from 'axios'
 import '../../styles/reels.css'
 import ReelFeed from '../../components/ReelFeed'
 
-const Home = () => {
+const isSavedItem = (item) => Boolean(item.isSaved ?? item.saved ?? item.isBookmarked)
+
+const Save = () => {
 	const [videos, setVideos] = useState([])
 
 	useEffect(() => {
-		axios.get('http://localhost:3000/api/food', { withCredentials: true })
+		axios.get('http://localhost:3000/api/food/saved', { withCredentials: true })
 			.then((response) => {
-				setVideos(response.data.foodItems || [])
+				const items = response.data.foodItems || []
+				setVideos(items.filter(isSavedItem))
 			})
 			.catch(() => { /* noop */ })
 	}, [])
@@ -34,19 +37,24 @@ const Home = () => {
 		try {
 			const response = await axios.post('http://localhost:3000/api/food/save', { foodId: item._id }, { withCredentials: true })
 			const { save, saveCount } = response.data || {}
-			setVideos((prev) =>
-				prev.map((v) =>
-					v._id === item._id
-						? {
-							...v,
-							isSaved: save,
-							saved: save,
-							saveCount: typeof saveCount === 'number' ? saveCount : (v.saveCount || 0),
-							savesCount: typeof saveCount === 'number' ? saveCount : (v.savesCount || 0)
-						}
-						: v
+			if (save) {
+				setVideos((prev) =>
+					prev.map((v) =>
+						v._id === item._id
+							? {
+								...v,
+								isSaved: true,
+								saved: true,
+								saveCount: typeof saveCount === 'number' ? saveCount : (v.saveCount || 0),
+								savesCount: typeof saveCount === 'number' ? saveCount : (v.savesCount || 0)
+							}
+							: v
+					)
 				)
-			)
+			} else {
+				// removed from saved list
+				setVideos((prev) => prev.filter((v) => v._id !== item._id))
+			}
 		} catch (e) {
 			// ignore
 		}
@@ -57,9 +65,9 @@ const Home = () => {
 			items={videos}
 			onLike={likeVideo}
 			onSave={saveVideo}
-			emptyMessage="No videos available."
+			emptyMessage="No saved videos yet."
 		/>
 	)
 }
 
-export default Home
+export default Save

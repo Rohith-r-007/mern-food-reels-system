@@ -1,0 +1,148 @@
+.create-food-page {
+  min-height: 100vh;
+  background: #0f0f0f;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+.create-food-card {
+  width: 100%;
+  max-width: 400px;
+  background: #1b1b1b;
+  border-radius: 24px;
+  padding: 24px;
+  box-sizing: border-box;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+.create-food-card h1 {
+  color: white;
+  margin: 0;
+  font-size: 28px;
+}
+
+.subtitle {
+  color: #9f9f9f;
+  margin-top: 6px;
+  margin-bottom: 28px;
+  font-size: 14px;
+}
+
+.create-food-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 100%;
+  min-width: 0;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+}
+
+.form-group label {
+  color: white;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.form-group input,
+.form-group textarea {
+  background: #2a2a2a;
+  border: 1px solid #3b3b3b;
+  border-radius: 14px;
+  padding: 14px;
+  color: white;
+  font-size: 15px;
+  outline: none;
+}
+
+.form-group textarea {
+  resize: none;
+  min-height: 120px;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: #ff7a00;
+}
+
+.upload-box {
+  background: #2a2a2a;
+  border: 2px dashed #4a4a4a;
+  border-radius: 16px;
+  padding: 28px 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.upload-box:hover {
+  border-color: #ff7a00;
+}
+
+.upload-box span {
+  color: #bdbdbd;
+  font-size: 14px;
+  word-break: break-word;
+}
+
+.upload-box input {
+  display: none;
+}
+
+.video-preview {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  height: 240px;
+  margin-top: 12px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #000;
+  border: 1px solid #3b3b3b;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.video-preview-player {
+  display: block;
+  width: auto !important;
+  height: auto !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: contain;
+}
+
+.submit-btn {
+  margin-top: 10px;
+  background: #ff7a00;
+  color: white;
+  border: none;
+  border-radius: 14px;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.submit-btn:hover {
+  opacity: 0.9;
+}
+
+.submit-btn:active {
+  transform: scale(0.98);
+}
