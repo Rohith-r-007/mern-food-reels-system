@@ -1,4 +1,4 @@
-const foodPartnerModel = require('../models/foodPartner.model.js');
+const foodPartnerModel = require('../models/foodpartner.model.js');
 const userModel = require('../models/user.model.js');
 const jwt = require('jsonwebtoken');
 
