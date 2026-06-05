@@ -6,12 +6,13 @@ const authRoutes = require('./routes/auth.routes.js');
 const foodRoutes = require('./routes/food.routes.js');
 const foodPartnerRoutes = require('./routes/food-partner.routes.js');
 
+
 const cors = require('cors');
 
 const app = express();// creating an instance of express
 
 // middlewares
-const allowedOrigins = ['http://localhost:5173', 'http://localhost:5174'];
+const allowedOrigins = ['http://localhost:5173', 'http://localhost:5174', process.env.CLIENT_URL];
 app.use(cors({
     origin: function(origin, callback) {
         if (!origin) return callback(null, true);
