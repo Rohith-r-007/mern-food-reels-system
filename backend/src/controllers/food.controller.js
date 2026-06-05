@@ -25,11 +25,20 @@ async function createFood(req, res) {
 }
 
 async function getFoodItems(req, res) {
-    const user = req.user;
 
     const foods = await foodModel.find({});
 
+    if (!req.user) {
+        return res.status(200).json({
+            message: 'food items fetched successfully',
+            foodItems: foods
+        });
+    }
+
+    const user = req.user;
+
     const foodIds = foods.map((f) => f._id);
+
     const [likedDocs, savedDocs] = await Promise.all([
         likesModel.find({ user: user._id, food: { $in: foodIds } }).select('food'),
         savedModel.find({ user: user._id, food: { $in: foodIds } }).select('food')
@@ -40,12 +49,12 @@ async function getFoodItems(req, res) {
 
     const foodItems = foods.map((food) => {
         const obj = food.toObject();
-        const idStr = obj._id?.toString?.() ?? String(obj._id);
+        const idStr = obj._id.toString();
+
         return {
             ...obj,
             isLiked: likedSet.has(idStr),
             isSaved: savedSet.has(idStr),
-            // Backwards-compat alias used by some UI code
             savesCount: obj.saveCount ?? 0
         };
     });

@@ -1,0 +1,49 @@
+services:
+
+  mongodb:
+    image: mongo:8
+    container_name: foodreels-mongo
+
+    ports:
+      - "27017:27017"
+
+    volumes:
+      - mongo_data:/data/db
+
+  backend:
+    build:
+      context: ./backend
+
+    container_name: foodreels-backend
+
+    env_file:
+      - ./backend/.env
+
+    ports:
+      - "3000:3000"
+
+    depends_on:
+      - mongodb
+
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+
+  frontend:
+    build:
+      context: ./frontend
+
+    container_name: foodreels-frontend
+
+    ports:
+      - "5173:5173"
+
+    depends_on:
+      - backend
+
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+
+volumes:
+  mongo_data:
