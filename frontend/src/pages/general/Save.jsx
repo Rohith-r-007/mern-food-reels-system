@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios'
 import '../../styles/reels.css'
 import ReelFeed from '../../components/ReelFeed'
+import api from '../../utils/api'
 
 const isSavedItem = (item) => Boolean(item.isSaved ?? item.saved ?? item.isBookmarked)
 
@@ -9,7 +9,7 @@ const Save = () => {
 	const [videos, setVideos] = useState([])
 
 	useEffect(() => {
-		axios.get('http://localhost:3000/api/food/saved', { withCredentials: true })
+		api.get('/api/food/saved')
 			.then((response) => {
 				const items = response.data.foodItems || []
 				setVideos(items.filter(isSavedItem))
@@ -19,7 +19,7 @@ const Save = () => {
 
 	async function likeVideo(item) {
 		try {
-			const response = await axios.post('http://localhost:3000/api/food/like', { foodId: item._id }, { withCredentials: true })
+			const response = await api.post('/api/food/like', { foodId: item._id })
 			const { like, likeCount } = response.data || {}
 			setVideos((prev) =>
 				prev.map((v) =>
@@ -35,7 +35,7 @@ const Save = () => {
 
 	async function saveVideo(item) {
 		try {
-			const response = await axios.post('http://localhost:3000/api/food/save', { foodId: item._id }, { withCredentials: true })
+			const response = await api.post('/api/food/save', { foodId: item._id })
 			const { save, saveCount } = response.data || {}
 			if (save) {
 				setVideos((prev) =>

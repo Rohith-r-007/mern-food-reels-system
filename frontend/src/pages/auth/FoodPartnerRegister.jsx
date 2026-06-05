@@ -3,6 +3,7 @@ import AuthSwitch from '../../components/AuthSwitch'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import api from '../../utils/api'
 const FoodPartnerRegister = () => {
 
   const navigate = useNavigate()
@@ -16,15 +17,13 @@ const FoodPartnerRegister = () => {
     const password = e.target.password.value;
     const address = e.target.address.value;
 
-    const response = await axios.post("http://localhost:3000/api/auth/food-partner/register", {
+    const response = await api.post("/api/auth/food-partner/register", {
         name,
         contactName,
         phone,
         email,
         password,
         address
-    }, {
-      withCredentials: true
     })
 
     console.log(response.data);
