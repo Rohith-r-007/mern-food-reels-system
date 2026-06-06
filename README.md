@@ -1,4 +1,4 @@
-# MERN Food Reels System 🍔🎥
+# MERN Food Reels System 
 
 A full-stack food discovery platform inspired by short-form video content. Users can explore food reels uploaded by food partners, like and save their favorite reels, and discover restaurants through engaging visual content.
 
